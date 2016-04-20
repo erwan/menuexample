@@ -1,0 +1,50 @@
+doctype html(lang='en')
+
+head
+    title TODO
+    link(rel="stylesheet", href="/stylesheets/reset.css")
+    link(rel="stylesheet", href="/stylesheets/style.css")
+    link(href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900", rel="stylesheet", type="text/css")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+
+    script(src="//code.jquery.com/jquery-1.11.3.min.js")
+
+    // Bootstrap
+    link(rel="stylesheet", href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css", integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7", crossorigin="anonymous")
+    link(rel="stylesheet", href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css", integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r", crossorigin="anonymous")
+    script(src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js", integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS", crossorigin="anonymous")
+    
+    // Required for Previews and Experiments
+    script
+      = ctx?"window.prismic = { endpoint: '" + ctx.endpoint + "' };":""
+    script(src="//static.cdn.prismic.io/prismic.min.js")
+
+body
+ 
+  // Static navbar
+  nav.navbar.navbar-default.navbar-static-top
+    .container
+      .navbar-header
+        button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar')
+          span.sr-only Toggle navigation
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
+        a.navbar-brand(href='#') Project name
+      #navbar.navbar-collapse.collapse
+          ul.nav.navbar-nav
+            each item in menu
+              if !item.dropdown
+                li
+                  a(href=item.url)= item.label
+              else
+                li.dropdown
+                  a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
+                    | Dropdown 
+                    span.caret
+                  ul.dropdown-menu
+                    each subitem in item.subitems
+                      li
+                        a(href=subitem.url)= subitem.label
+  .container
+    block body
