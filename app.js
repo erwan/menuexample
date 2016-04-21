@@ -51,8 +51,9 @@ function parseMenu(navdoc) {
 }
 
 function withMenu(req, res) {
+  res.locals.path = req.path; // We need the path to set the "active" class
+  res.locals.linkResolver = configuration.linkResolver;
   return api().then(function(api) {
-    console.log('api', api);
     return api.getByUID('nav', 'main-menu').then(function(navdoc) {
       if (navdoc) {
         res.locals.menu = parseMenu(navdoc);
@@ -77,6 +78,18 @@ app.route('/').get(function(req, res){
     res.render('index.jade');
   }).catch(function(err) {
     handleError(err, req, res);
+  });
+});
+
+app.route('/doc/:id').get(function(req, res) {
+  withMenu(req, res).then(function(api) {
+    return api.getByID(req.params.id);
+  }).then(function(doc) {
+    if (doc) {
+      res.render('doc.jade', {doc: doc});
+    } else {
+      res.status(404).send('Not found');
+    }
   });
 });
 

@@ -35,7 +35,7 @@ body
           ul.nav.navbar-nav
             each item in menu
               if !item.dropdown
-                li
+                li(class=item.url == path ? 'active' : '')
                   a(href=item.url)= item.label
               else
                 li.dropdown
