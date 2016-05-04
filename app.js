@@ -22,32 +22,35 @@ function api() {
 
 // Parse the menu and resolve the links
 function parseMenu(navdoc) {
-  return navdoc.getSliceZone('nav.items').slices.map(function(item) {
+  var menu = [];
+  navdoc.getSliceZone('nav.items').slices.forEach(function(item) {
     switch (item.sliceType) {
     case 'top-level':
       var label = item.value.getFirstTitle().text;
       var link = item.value.value[0].getLink('link');
-      return {
-        dropdown: false,
+      menu.push({
         label: label,
         url: configuration.linkResolver(link)
-      };
+      });
+      break;
     default:
       var subitems = item.value.toArray().map(function(item) {
         var label = item.getFirstTitle().text;
         var link = item.getLink('link');
         return {
-          dropdown: false,
           label: label,
           url: configuration.linkResolver(link)
         };
       });
-      return {
+      var last = menu.pop() || {};
+      menu.push(Object.assign(last, {
         dropdown: true,
         subitems: subitems
-      };
+      }));
     };
   });
+  console.log("Got: " + JSON.stringify(menu));
+  return menu;
 }
 
 function withMenu(req, res) {

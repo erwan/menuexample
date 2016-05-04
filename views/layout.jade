@@ -40,7 +40,7 @@ body
               else
                 li.dropdown
                   a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
-                    | Dropdown 
+                    = item.label
                     span.caret
                   ul.dropdown-menu
                     each subitem in item.subitems
